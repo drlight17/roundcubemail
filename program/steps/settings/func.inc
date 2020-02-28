@@ -972,7 +972,9 @@ function rcmail_user_prefs($current = null)
                 foreach ($books as $book) {
                     $select->add(html_entity_decode($book['name'], ENT_COMPAT, 'UTF-8'), $book['id']);
                 }
-
+		          // samoilov 23.01.2020 add carddav option to selector
+                $select->add('Контакты КНЦ РАН', 'carddav_1');
+             
                 $blocks['main']['options']['default_addressbook'] = array(
                     'title'   => html::label($field_id, rcube::Q($RCMAIL->gettext('defaultabook'))),
                     'content' => $select->show($config['default_addressbook']),
