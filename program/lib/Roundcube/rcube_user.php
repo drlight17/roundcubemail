@@ -194,7 +194,12 @@ class rcube_user
         $a_user_prefs = $plugin['prefs'];
         $old_prefs    = $plugin['old'];
         $defaults     = $config->all();
-
+     
+       // samoilov 24.01.2020 fix to add default addressbook from config file parameter "default_addressbook"
+	       if (!isset($old_prefs['default_addressbook']))/* || ($old_prefs['default_addressbook']===$defaults['default_addressbook']))*/ {
+		          $a_user_prefs['default_addressbook']=$defaults['default_addressbook'];
+	       }
+	      ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // merge (partial) prefs array with existing settings
         $this->prefs = $save_prefs = $a_user_prefs + $old_prefs;
         unset($save_prefs['language']);
