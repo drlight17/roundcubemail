@@ -654,6 +654,13 @@ class rcube_ldap extends rcube_addressbook
         // filter entries for this page
         for ($i = $start_row; $i < min($entries['count'] ?? 0, $last_row); $i++) {
             if (!empty($entries[$i])) {
+                // check if object is a group and there are multiple proxyAddresses in it override mailto value (see ad_groups in config.inc.php.KSC-ldap)
+                if (in_array('group',$entries[$i]['objectclass'])) {
+                    if ($entries[$i]['proxyaddresses']['count'] > 1){
+                        $entries[$i]['proxyaddresses']['count'] = 1;
+                        $entries[$i]['proxyaddresses']['0'] = $entries[$i]['mail'][0];
+                    }
+                }
                 $this->result->add($this->_ldap2result($entries[$i]));
             }
         }
@@ -1109,6 +1116,14 @@ class rcube_ldap extends rcube_addressbook
 
             if ($rec = $this->ldap->get_entry($dn, $this->prop['attributes'])) {
                 $rec = array_change_key_case($rec, \CASE_LOWER);
+            }
+
+            // pre-process rcpt email array (see ad_groups in config.inc.php.KSC-ldap)
+            if (in_array('group',$rec['objectclass'])) {
+                if (count($rec['proxyaddresses']) > 1){
+                    unset($rec['proxyaddresses']);
+                    $rec['proxyaddresses'][0] = $rec['mail'];
+                }
             }
 
             // Use ldap_list to get subentries like country (c) attribute (#1488123)
