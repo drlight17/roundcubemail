@@ -561,7 +561,9 @@ class rcube_ldap extends rcube_addressbook
     public function set_sort_order($sort_col = null, $sort_order = null)
     {
         if (!empty($this->coltypes[$sort_col]['attributes'])) {
-            $this->sort_col = $this->coltypes[$sort_col]['attributes'][0];
+            //$this->sort_col = $this->coltypes[$sort_col]['attributes'][0];
+            // to use sort column from ldap_public in RC config.inc.php
+            $this->sort_col = $this->prop['sort'];
         }
     }
 
