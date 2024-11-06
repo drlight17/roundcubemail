@@ -906,14 +906,28 @@ class rcube_ldap extends rcube_addressbook
             $filter .= ')';
         } else {
             $attributes = [];
+            $min_attributes = ['name', 'surname', 'firstname', 'email'];
 
-            if ($fields == '*') {
-                $fields = (array) ($this->prop['search_fields'] ?? []);
 
-                // If search fields aren't configured use some common fields
-                if (empty($fields)) {
-                    $fields = ['name', 'surname', 'firstname', 'email'];
+            $fields = (array) ($this->prop['search_fields'] ?? []);
+
+            // If search fields aren't configured use some common fields
+            if (empty($fields)) {
+                $fields = $min_attributes;
+            }
+
+            // check for valid search fields
+            $hasKey = false;
+            foreach ($min_attributes as $min_attribute) {
+                // if no minimum valid search attributes found then add $min_attributes to prevent empty search results
+                if (in_array($min_attribute, (array) $fields)) {
+                    $hasKey = true;
+                    break;
                 }
+            }
+
+            if (!$hasKey) {
+                $fields = array_merge($fields,$min_attributes);
             }
 
             // map address book fields into ldap attributes
