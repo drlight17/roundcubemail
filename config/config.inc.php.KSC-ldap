@@ -1,0 +1,22 @@
+# ...
+$rcmail_config['ldap_public']['ad_groups'] = [
+    'name'            => 'Aliases and mail lists,
+    'hosts'           => ['ldap://dc.example.com'],
+    'port'            => 389,
+    'use_tls' => true,
+    'base_dn'         => 'OU=aliases,DC=example,DC=com',
+    'bind_dn'         => 'ad_user@example.com',
+    'bind_pass'        => 'ad_user_password',
+    'writable'        => false,
+    'filter'          => '(&(proxyAddresses=*@example.com)(!(info=service)))',
+    'scope'           => 'sub',
+    'fieldmap'        => [
+        'name'        => 'mail',
+        'jobtitle'    => 'description',
+        'email:work'       => 'proxyAddresses'
+    ],
+    // dont add email to search_fileds to prevent search output with aliases containing this email
+    'search_fields'   => ['name', 'jobtitle'],
+    'sort'            => 'mail',
+];
+# ...
