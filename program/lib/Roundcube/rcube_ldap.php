@@ -1118,14 +1118,6 @@ class rcube_ldap extends rcube_addressbook
                 $rec = array_change_key_case($rec, \CASE_LOWER);
             }
 
-            // pre-process rcpt email array (see ad_groups in config.inc.php.KSC-ldap)
-            if (in_array('group',$rec['objectclass'])) {
-                if (count($rec['proxyaddresses']) > 1){
-                    unset($rec['proxyaddresses']);
-                    $rec['proxyaddresses'][0] = $rec['mail'];
-                }
-            }
-
             // Use ldap_list to get subentries like country (c) attribute (#1488123)
             if (!empty($rec) && $this->sub_filter) {
                 if ($entries = $this->ldap->list_entries($dn, $this->sub_filter, array_keys($this->prop['sub_fields']))) {
