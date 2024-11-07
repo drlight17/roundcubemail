@@ -1,4 +1,6 @@
 # ...
+$rcmail_config['plugins'] = array('custom_contacts_labels',/*...*/);
+# ...
 $rcmail_config['ldap_public']['ad_groups'] = [
     'name'            => 'Aliases and mail lists,
     'hosts'           => ['ldap://dc.example.com'],
