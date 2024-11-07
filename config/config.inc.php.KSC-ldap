@@ -11,12 +11,13 @@ $rcmail_config['ldap_public']['ad_groups'] = [
     'filter'          => '(&(proxyAddresses=*@example.com)(!(info=service)))',
     'scope'           => 'sub',
     'fieldmap'        => [
-        'name'        => 'mail',
-        'jobtitle'    => 'description',
-        'email:work'       => 'proxyAddresses'
+        'name'        => 'description',
+        'firstname'    => 'description',
+        'email:work'       => 'mail',
+        'email:other'       => 'proxyAddresses'
     ],
     // dont add email to search_fileds to prevent search output with aliases containing this email
-    'search_fields'   => ['name', 'jobtitle'],
-    'sort'            => 'mail',
+    'search_fields'   => ['name', 'email'],
+    'sort'            => 'description',
 ];
 # ...
